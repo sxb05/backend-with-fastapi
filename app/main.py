@@ -8,82 +8,87 @@ import time
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
-
-
-
+from fastapi import Body, FastAPI,HTTPException,status
+from fastapi.params import Body
+from pydantic import BaseModel
+from random import randrange
 app = FastAPI()
 
 class  Post(BaseModel):
     name: str
-    inventory: int
+    description: str
     price: int
 
-while True:
-    try:
-        conn = psycopg.connect("dbname=fastapi user=postgres password=12345678" , row_factory=dict_row)
-        cur = conn.cursor()
-        break
-    except Exception as error:
-        print("Error") 
-        time.sleep(20)    
+my_data = [
+    {
+    "name": "laptop",
+    "id": 1,
+    "description": "this is a laptop",
+    "price": 50000
+   } ,{
+        "id": 2,
+    "name": "subash",
+    "description": "person",
+    "price": 1500
+  }
+]
 
-    
 @app.get("/")
-async def root():                        #async keyword is used to perform task asyncronously
-    return "hi++"                        #pydantic has nothing to do with fastapi it is usally used to define a shcemea
+async def root():                     #async keyword is used to perform task asyncronously
+    return "hi++"                     #pydantic has nothing to do with fastapi it is usally used to define a shcemea
 
 
 
-@app.get("/products")
+@app.get("/posts")
 def welcome():
-    x = cur.execute("""SELECT * FROM products""").fetchall()
-    return {"data": x}
+    return {"data": my_data}
 
 
 
 
-@app.post("/products", status_code=status.HTTP_201_CREATED)
-def create_posts(product: Post):
+@app.post("/posts", status_code=status.HTTP_201_CREATED)
+def create_posts(payload: Post):
      
-    cur.execute("""INSERT INTO products (name , price, inventory) VALUES (%s, %s, %s) RETURNING id""", (product.name, product.price, product.inventory))
-    new_product = cur.fetchone()
-    conn.commit()
-    return {"data": new_product}
+     data_dict = payload.dict()
+     data_dict["id"] = randrange(0, 100000000)
+     my_data.append(data_dict)
+
+     return {"data": data_dict}
 
 
 
 
 
-@app.get("/posts/{id}", status_code=status.HTTP_200_OK)
+@app.get("/posts/{id}")
 def get_post(id: int):
-    cur.execute("""SELECT * FROM products WHERE id = %s""",(id,))
-    fet_prod = cur.fetchone()
-    if not fet_prod:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"post with id {id} not found")
-    return {"data": fet_prod}
+    print(id)
+    return {id}
 
 
 
-@app.delete("/posts/{id}",status_code=status.HTTP_204_NO_CONTENT)
+@app.delete("/posts{id}",status_code = status.HTTP_204_NO_CONTENT)
 def del_post(id: int):
-    cur.execute("""DELETE FROM products WHERE id = %s returning *""", (id,) )
-    deleted_prod = cur.fetchone()
-    if not deleted_prod: 
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"product with id {id} not found")
-    conn.commit()
-    
-    return {"data": f"product with {id} deleted successfully"}
+    for i, p in enumerate(my_data):
+        if p["id"] == id:
+            del my_data[i]
+            break
+    else:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"post with id {id} not found")
+    return my_data
 
 @app.put("/posts/{id}")
-def update_post(id: int, product: Post):
-    cur.execute("""UPDATE products SET name = %s, price=%s, inventory=%s WHERE id = %s returning id""", (product.name, product.price, product.inventory,id) )
-    updated_prod = cur.fetchone()
-    conn.commit()
-    if not updated_prod:
-         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"post with id {id} not found")
+def update_post(id: int, payload: Post):
+    for i, p in enumerate(my_data):
+        if p["id"] == id:
+            posts_dict = payload.dict()
+            posts_dict["id"] = id
+            my_data[i] = posts_dict
+            return my_data[i]
     else:
-        return {"data" : "updated sucessfully"}    
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"post with id {id} not found")
+                
+
+ 
 
 
 
