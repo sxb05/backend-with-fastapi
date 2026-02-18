@@ -1,5 +1,5 @@
-from database import Base
-from sqlalchemy import Coloumn, Integer, String, Boolean
+from .database import Base
+from sqlalchemy import Column, Integer, String, Boolean, TIMESTAMP, text
 
 
 
@@ -7,8 +7,8 @@ class Products(Base):
     __tablename__ = "Products"    
 
 
-    id = Coloumn(Integer, primary_key=True, nullable=False)
-    name = Coloumn(String, nullable=False)
-    price = Coloumn(Integer, nullable=False)
-    inventory = Coloumn(Integer, nullable=False)
-    published_at = Coloumn(Boolean, default=True)
+    id = Column(Integer, primary_key=True, nullable=False)
+    name = Column(String, nullable=False)
+    price = Column(Integer, nullable=False)
+    inventory = Column(Integer, nullable=False)
+    published_at = Column(TIMESTAMP(timezone=True), nullable = False, server_default = text('now()'))

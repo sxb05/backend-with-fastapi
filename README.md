@@ -23,7 +23,7 @@ The purpose of this repository is to **track real learning progress** and build 
 - **Backend Framework:** FastAPI  
 - **Database:** PostgreSQL  
 - **Data Validation:** Pydantic  
-- **API Testing:** Postman  
+- **API Testing:** Postman and Swagger(/docs)  
 - **Database Management:** pgAdmin  
 - **Version Control:** Git & GitHub  
 - **Editor:** Visual Studio Code  
