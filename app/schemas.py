@@ -7,6 +7,9 @@ class  Product(BaseModel):
 
 class ProductOut(BaseModel):
     id: int
+    name: str
+    inventory: int
+    price: int
 
 class User(BaseModel):
     email: EmailStr
