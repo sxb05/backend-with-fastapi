@@ -5,14 +5,20 @@ from .. import models
 from ..schemas import LoginOut, Login
 from ..utils import verify_password
 from.. import oauth2
+from fastapi.security import OAuth2PasswordRequestForm
+
+
 router = APIRouter(tags=["auth"])
 
 
 @router.post("/login")
-def login(log_cred: Login, db: Session = Depends(get_db), response_model = LoginOut):
-    user_login = db.query(models.User).filter(models.User.email == log_cred.email).first()
+def login(log_cred: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+
+
+
+    user_login = db.query(models.User).filter(models.User.email == log_cred.username).first()
     if not user_login:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"user with email {log_cred.email} not found")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"user with email {log_cred.username} not found")
     if not verify_password(log_cred.password, user_login.password):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"invalid password")
 
