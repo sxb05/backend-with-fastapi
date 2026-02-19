@@ -19,5 +19,12 @@ class UserOut(BaseModel):
     id: int
     email: EmailStr
     created_at: datetime
+
+class Login(BaseModel):
+    email: EmailStr
+    password: str
+
+class LoginOut(BaseModel): 
+    
 class Config:
     orm_mode = True

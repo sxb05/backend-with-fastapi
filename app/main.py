@@ -15,7 +15,7 @@ from sqlalchemy.orm import Session
 from .schemas import Product, ProductOut, User, UserOut
 from .utils import hash_password
 from typing import List
-from .routers import products, user
+from .routers import products, user, auth
 
 app = FastAPI()
 models.Base.metadata.create_all(bind=engine)
@@ -23,7 +23,7 @@ models.Base.metadata.create_all(bind=engine)
 
 app.include_router(products.router)
 app.include_router(user.router)
-
+app.include_router(auth.router)
 
 
 
