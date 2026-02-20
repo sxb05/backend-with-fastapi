@@ -48,16 +48,20 @@ def get_products(db: Session = Depends(get_db)):
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model= ProductOut)
-def create_products(product: Product, db: Session = Depends(get_db), get_current_user: int = Depends(get_current_user)):
+def create_products(product: Product, db: Session = Depends(get_db), get_currentuser: int = Depends(get_current_user)):
     # new_product = models.Products(name=product.name, price=product.price, inventory=product.inventory)
+    
+    print(get_currentuser.email)
+    
     new_product = models.Products(**product.dict())
+
     db.add(new_product)
     db.commit()
     db.refresh(new_product)
     return new_product 
 
 @router.get("/{id}", response_model=List[ProductOut])
-def get_product(id: int, db: Session = Depends(get_db)):
+def get_product(id: int, db: Session = Depends(get_db), user_id: int = Depends(get_current_user)):
     product = db.query(models.Products).filter(models.Products.id == id).first()
     if not product:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"product with id {id} not found")
