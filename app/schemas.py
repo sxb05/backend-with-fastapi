@@ -10,7 +10,8 @@ class ProductOut(BaseModel):
     name: str
     inventory: int
     price: int
-
+    owner_id: int
+    owner: UserOut
 class User(BaseModel):
     email: EmailStr
     password: str

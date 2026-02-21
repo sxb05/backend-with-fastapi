@@ -1,20 +1,14 @@
-from fastapi import Body, FastAPI,HTTPException,status, Depends
-from fastapi.params import Body
-from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
-from pydantic import BaseModel
+from fastapi import Body, FastAPI
 from random import randrange
-import psycopg
-from psycopg.rows import dict_row
 import time
 import os
 from dotenv import load_dotenv
 from . import models
-from .database import Base, engine, SessionLocal, get_db
-from sqlalchemy.orm import Session
-from .schemas import Product, ProductOut, User, UserOut
+from .database import engine
+
+
 from .utils import hash_password
-from typing import List
+
 from .routers import products, user, auth
 
 app = FastAPI()
@@ -45,18 +39,6 @@ app.include_router(auth.router)
                                                                                                                                                                                                                                                                                     # app.mount("/static", StaticFiles(directory="app/frontend"), name="static")
 
 
-
-
-                                                                                                                                                                                                                                                                                    # while True:
-                                                                                                                                                                                                                                                                                    #     try:
-                                                                                                                                                                                                                                                                                    #         conn = psycopg.connect("dbname=fastapi user=postgres password=12345678" , row_factory=dict_row)
-                                                                                                                                                                                                                                                                                    #         cur = conn.cursor()
-                                                                                                                                                                                                                                                                                    #         break
-                                                                                                                                                                                                                                                                                    #     except Exception as error:
-                                                                                                                                                                                                                                                                                    #         print("Error") 
-                                                                                                                                                                                                                                                                                    #         time.sleep(20)    
-
-                                                                                                                                                                                                                                                                                        
 
 
 
