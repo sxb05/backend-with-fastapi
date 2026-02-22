@@ -2,7 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import text
-
+from .config import settings
 
                                                                                                                                                                                                                                                                                     # while True:
                                                                                                                                                                                                                                                                                     #     try:
@@ -23,7 +23,8 @@ from sqlalchemy import text
 
 
 
-engine = create_engine("postgresql+psycopg2://postgres:12345678@localhost:5432/fastapi")
+engine = create_engine(f"postgresql+psycopg2://{settings.DATABASE_USERNAME}:{settings.DATABASE_PASSWORD}@{settings.DATABASE_HOST}:{settings.DATABASE_PORT}/{settings.DATABASE_NAME}")
+                                                                             
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

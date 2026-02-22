@@ -5,11 +5,9 @@ import os
 from dotenv import load_dotenv
 from . import models
 from .database import engine
-
-
 from .utils import hash_password
-
-from .routers import products, user, auth
+from .routers import products, user, auth, review
+from .config import Settings
 
 app = FastAPI()
 models.Base.metadata.create_all(bind=engine)

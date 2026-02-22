@@ -1,4 +1,3 @@
-from ..schemas import  User, UserOut
 from fastapi import Body, FastAPI,HTTPException,status, Depends, APIRouter
 from sqlalchemy.orm import Session
 from ..database import Base, engine, SessionLocal, get_db

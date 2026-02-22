@@ -24,3 +24,8 @@ class User(Base):
     password = Column(String, nullable=False)
     created_at = Column(TIMESTAMP(timezone=True), nullable = False, server_default = text('now()'))
 
+class Review(Base):
+    __tablename__ = "Review"
+
+    user_id = Column(Integer, ForeignKey("users.id", ondelete='CASCADE'), nullable=False, primary_key=True)
+    prod_id = Column(Integer,ForeignKey("Products.id", ondelete='CASCADE'), nullable=False, primary_key=True)
