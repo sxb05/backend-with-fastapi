@@ -1,7 +1,7 @@
 # Virtual environment
 venv/
 .env
-
+alembic\env.py
 # Python cache
 __pycache__/
 *.pyc
