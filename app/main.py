@@ -8,9 +8,20 @@ from .database import engine
 from .utils import hash_password
 from .routers import products, user, auth, likes
 from .config import Settings
+from fastapi.middleware.cors import CORSMiddleware
+
+
 
 app = FastAPI()
 
+origins = ["https://www.google.com", "http://localhost:8000"]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[origins],
+    allow_methods=["*"],    
+    allow_headers=["*"],
+    allow_credentials=True
+)
 
 
 app.include_router(products.router)
