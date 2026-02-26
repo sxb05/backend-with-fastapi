@@ -10,7 +10,7 @@ from .routers import products, user, auth, likes
 from .config import Settings
 
 app = FastAPI()
-models.Base.metadata.create_all(bind=engine)
+
 
 
 app.include_router(products.router)
