@@ -297,12 +297,96 @@ Request ──> FastAPI Router ──> Pydantic Validation ──> SQLAlchemy OR
 
 ---
 
+---
+
+## Docker Setup & Deployment
+
+### Prerequisites
+
+- Docker Desktop installed
+- Docker Compose installed
+
+### Environment Configuration
+
+1. **Copy the example environment file:**
+   ```bash
+   cp .env.example .env
+   ```
+
+2. **Update `.env` with your configuration** (optional - defaults are included):
+   ```env
+   DATABASE_HOST=db
+   DATABASE_PORT=5432
+   DATABASE_NAME=fastapi_db
+   DATABASE_USERNAME=postgres
+   DATABASE_PASSWORD=postgres
+   SECRET_KEY=your-secret-key-change-in-production
+   ALGORITHM=HS256
+   ACCESS_TOKEN_EXPIRE_MINUTES=30
+   ```
+
+### Running with Docker Compose
+
+**Start both FastAPI and PostgreSQL:**
+```bash
+docker-compose up -d
+```
+
+**View logs:**
+```bash
+docker-compose logs -f app
+docker-compose logs -f db
+```
+
+**Stop the services:**
+```bash
+docker-compose down
+```
+
+**Stop and remove volumes (clears database data):**
+```bash
+docker-compose down -v
+```
+
+### Running Docker Build Manually
+
+**Build the image:**
+```bash
+docker build -t fastapi-app .
+```
+
+**Run the container:**
+```bash
+docker run -p 8000:8000 --env-file .env fastapi-app
+```
+
+### Access Your Application
+
+- **API**: http://localhost:8000
+- **Swagger UI Docs**: http://localhost:8000/docs
+- **ReDoc Docs**: http://localhost:8000/redoc
+
+### Database Migrations with Alembic
+
+Run migrations inside the container:
+```bash
+docker-compose exec app alembic upgrade head
+```
+
+Create a new migration:
+```bash
+docker-compose exec app alembic revision --autogenerate -m "migration description"
+```
+
+---
+
 ## Learning Resources
 
 - [FastAPI Official Documentation](https://fastapi.tiangolo.com/)
 - [SQLAlchemy Documentation](https://docs.sqlalchemy.org/)
 - [Pydantic Documentation](https://docs.pydantic.dev/)
 - [PostgreSQL Documentation](https://www.postgresql.org/docs/)
+- [Docker Documentation](https://docs.docker.com/)
 
 ---
 
