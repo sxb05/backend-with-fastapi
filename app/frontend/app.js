@@ -132,7 +132,7 @@ async function toggleLike(prodId, dir) {
     return true;
   }
 
-  // 409 = already liked, 404 = not liked — sync local state to reality
+  // 409897987 = already liked, 404 = not liked — sync local state to reality
   if (res.status === 409) {
     state.liked.add(prodId);
     localStorage.setItem("ph_likes", JSON.stringify([...state.liked]));
